@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Tally App Dashboard</title>
+  <link rel="stylesheet" href="/static/ledger_app/style.css">
+  <script>
+    // auto-hide alerts after 4 seconds
+    window.addEventListener('DOMContentLoaded', function(){
+      setTimeout(function(){
+        var alerts = document.querySelectorAll('.alert');
+        alerts.forEach(function(a){ a.style.display='none'; });
+      }, 4000);
+    });
+  </script>
+</head>
+<body>
+  <header class="topbar"><div class="container"><h1>Tally App </h1></div></header>
+
+  <!-- alert messages -->
+  <div class="container">
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert {% if message.tags %}{{ message.tags }}{% endif %}">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+  </div>
+
+  <main class="container">{% block content %}{% endblock %}</main>
+  <footer class="footer"><div class="container">Powred @ HBCT.IN</div></footer>
+</body>
+</html>

@@ -1,0 +1,76 @@
+{% extends 'ledger_app/base.html' %}
+{% block content %}
+<div class="controls card">
+  <div class="controls-row">
+    <div class="left-controls">
+      <a class="btn credit" href="{% url 'add_credit' %}" target="_blank">➕ Add Credit</a>
+      <a class="btn debit" href="{% url 'add_debit' %}" target="_blank">➕ Add Debit</a>
+      <a class="btn" href="?show_all=1">Show All Entries</a>
+      <a class="btn success" href="{% url 'export_ledger_to_excel' %}?start={{ start }}&end={{ end }}&show_all={{ show_all }}">Export</a>
+      <a class="btn" href="{% url 'credit_all_entry_history' %}" target="_blank" style="color:white;background-color:orange;r">History</a>
+    </div>
+    <div class="right-controls">
+      <form method="get" class="filter-form">
+        <label>From</label><input type="date" name="start" value="{{ start }}">
+        <label>To</label><input type="date" name="end" value="{{ end }}">
+        <button class="btn" type="submit">Filter</button>
+        <a class="btn muted" href="{% url 'ledger_list' %}">Reset</a>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="tables-row">
+  <div class="card table-card">
+    <h3>Credits ({{ total_credit_display }})</h3>
+    <div class="table-responsive">
+      <table>
+        <thead><tr><th>Date</th><th>Particular</th><th>Amount</th><th>Action</th></tr></thead>
+        <tbody>
+          {% for e in credits %}
+          <tr>
+            <td>{{ e.timestamp|date:'Y-m-d' }}</td>
+            <td>{{ e.particular_credit }}</td>
+            <td style="text-align:right;">{{ e.credit_amount }}</td>
+            <td><a class="btn small" href="{% url 'edit_credit' e.id %}">Edit</a> <a class="btn danger small" href="{% url 'delete_credit' e.id %}" onclick="return confirm('Delete?')">Delete</a></td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="4">No credit entries.</td></tr>
+          {% endfor %}
+        </tbody>
+        <tfoot>
+          <tr class="totals-row"><td></td><td style="text-align:right;"><strong>Total</strong></td><td style="text-align:right;"><strong>{{ total_credit_display }}</strong></td><td></td></tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+  <div class="card table-card">
+    <h3>Debits ({{ total_debit_display }})</h3>
+    <div class="table-responsive">
+      <table>
+        <thead><tr><th>Date</th><th>Particular</th><th>Amount</th><th>Action</th></tr></thead>
+        <tbody>
+          {% for e in debits %}
+          <tr>
+            <td>{{ e.timestamp|date:'Y-m-d' }}</td>
+            <td>{{ e.particular_debit }}</td>
+            <td style="text-align:right;">{{ e.debit_amount }}</td>
+            <td><a class="btn small" href="{% url 'edit_debit' e.id %}">Edit</a> <a class="btn danger small" href="{% url 'delete_debit' e.id %}" onclick="return confirm('Delete?')">Delete</a></td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="4">No debit entries.</td></tr>
+          {% endfor %}
+        </tbody>
+        <tfoot>
+          <tr class="totals-row"><td></td><td style="text-align:right;"><strong>Total</strong></td><td style="text-align:right;"><strong>{{ total_debit_display }}</strong></td><td></td></tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="balance card">
+  <h3>Balance: <span class="balance-value">{{ balance_display }}</span></h3>
+</div>
+{% endblock %}

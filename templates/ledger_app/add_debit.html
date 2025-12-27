@@ -1,0 +1,33 @@
+{% extends 'ledger_app/base.html' %}
+{% block content %}
+<div class="card small-card">
+  <div class="card-header"><h2>Add Debit</h2></div>
+  <div class="card-body">
+    <form method="post">{% csrf_token %}
+      <label>Particular:</label>
+      <input
+        type="text"
+        name="particular"
+        required
+        style="width: 80%; height: 45px; font-size: 16px; padding: 8px; margin-bottom: 12px; border-radius: 8px; border: 1px solid #ccc;"
+      >
+      <br>
+
+      <label>Amount:</label>
+      <input
+        type="number"
+        step="0.01"
+        name="amount"
+        required
+        style="width: 80%; height: 45px; font-size: 16px; padding: 8px; margin-bottom: 12px; border-radius: 8px; border: 1px solid #ccc;"
+      >
+      <br>
+
+      <div style="margin-top:15px;">
+        <button class="btn debit" style="padding:10px 25px; font-size:16px;">Save Debit</button>
+        <a class="btn muted" href="#" onclick="window.close();return false;" style="padding:10px 25px; font-size:16px;">Close</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
